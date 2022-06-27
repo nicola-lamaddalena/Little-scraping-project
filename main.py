@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 URL = "insert the url of the wanted site"
 
@@ -20,3 +21,9 @@ links_list = [link["href"] for link in soup.find_all("a", href=True, class_=CLAS
 car_dict = dict(zip(zip(titles_list, prices_list), links_list))
 for car in car_dict.items():
     print(car)
+    
+with open("file.csv", "w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file, delimiter="|")
+    for x in car_dict-items():
+        writer.writerow(x)
+ 
