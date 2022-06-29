@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-import csv
+import sqlite3
+
+conn = sqlite3.connect("name_of_the_database.db")
+cursor = conn.cursor()
 
 URL = "insert the url of the wanted site"
 
@@ -17,13 +20,11 @@ titles_list = [title.text for title in soup.find_all("h2", class_=CLASS_TITLES)]
 prices_list = [price.text for price in soup.find_all("p", class_=CLASS_PRICES)]
 links_list = [link["href"] for link in soup.find_all("a", href=True, class_=CLASS_LINKS)]
 
-# Merging the 3 lists into one dictionary
-car_dict = dict(zip(zip(titles_list, prices_list), links_list))
-for car in car_dict.items():
-    print(car)
-    
-with open("file.csv", "w", newline="", encoding="utf-8") as file:
-    writer = csv.writer(file, delimiter="|")
-    for x in car_dict-items():
-        writer.writerow(x)
- 
+for (title, price, link) in zip(titles_list, prices_list, links_list):
+    cursor.execute("""
+    INSERT OR IGNORE INTO auto VALUES(?,?,?)
+    """, (title, price, link)
+
+conn.commit()
+conn.close()
+
