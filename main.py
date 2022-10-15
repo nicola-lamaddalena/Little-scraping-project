@@ -10,7 +10,7 @@ URL = "insert the url of the wanted site"
 # These are the css classes I need for my research
 CLASS_TITLES = ""
 CLASS_PRICES = ""
-CLASSs_LINKS = ""
+CLASS_LINKS = ""
 
 r = requests.get(URL).text
 soup = BeautifulSoup(r, "html.parser")
